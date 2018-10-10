@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Simple List</title>
+    <link rel="stylesheet" href="./bootstrap.css">
+    <link rel="stylesheet" href="./main.css">
+    <script src="./jquery.min.js"></script>
+    <script src="./main.js"></script>
+</head>
+<body>
+<header>
+    <div class="container">
+        <h1 class="display-4">Simple List</h1>
+    </div>
+</header>
+<main class="container py-3">
+    <form class="needs-validation novalidate"><!--add was-validated class to see error messages-->
+        <div class="form-row">
+            <div class="col-md-3 mb-3">
+                <input type="text" class="form-control form-control-sm" name="firstName" placeholder="Անուն" value=""/>
+                <div class="invalid-feedback">
+                    Միայն հայատառ.
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <input type="text" class="form-control form-control-sm" name="lastName" placeholder="Ազգանուն" value=""/>
+                <div class="invalid-feedback">
+                    Միայն հայատառ.
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <input type="text" class="form-control form-control-sm" name="fatherName" placeholder="Հայրանուն"/>
+                <div class="invalid-feedback">
+                    Միայն հայատառ.
+                </div>
+            </div>
+            <div class="col-md-2 mb-3">
+                <input type="number" min="1900" max="2018" class="form-control form-control-sm" name="year" placeholder="Ծննդյան թվական"/>
+                <div class="invalid-feedback">
+                    18 տարին դեռ չի լրացել.
+                </div>
+            </div>
+            <div class="col-md-1 mb-3">
+                <input class="btn btn-sm" type="submit" value="Փնտրել"/>
+            </div>
+        </div>
+    </form>
+
+    <table class="table table-sm">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Անուն</th>
+            <th scope="col">Ազգանուն</th>
+            <th scope="col">Հայրանուն</th>
+            <th scope="col">Ծննդյան օր</th>
+            <th scope="col">Հասցե</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th scope="row">1</th>
+            <td>Պողոս</td>
+            <td>Պողոսյան</td>
+            <td>Պողոսի</td>
+            <td>21/09/1991</td>
+            <td>Երևան</td>
+        </tr>
+        </tbody>
+    </table>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination pagination-sm">
+            <li class="page-item disabled">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</main>
+</body>
+</html>
