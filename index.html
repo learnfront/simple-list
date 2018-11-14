@@ -14,7 +14,7 @@
         <h1 class="display-4">Simple List</h1>
     </div>
 </header>
-<main class="container py-3">
+<main class="container py-3 search-container">
     <form class="needs-validation novalidate"><!--add was-validated class to see error messages-->
         <div class="form-row">
             <div class="col-md-3 mb-3">
@@ -42,7 +42,7 @@
                 </div>
             </div>
             <div class="col-md-1 mb-3">
-                <input class="btn btn-sm" type="submit" value="Փնտրել"/>
+                <input class="btn btn-sm" id="search" type="button" value="Փնտրել"/>
             </div>
         </div>
     </form>
@@ -58,7 +58,7 @@
             <th scope="col">Հասցե</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody id="table-data">
         <tr>
             <th scope="row">1</th>
             <td>Պողոս</td>
@@ -71,15 +71,13 @@
     </table>
     <nav aria-label="Page navigation example">
         <ul class="pagination pagination-sm">
-            <li class="page-item disabled">
+            <li class="page-item disabled previous">
                 <a class="page-link" href="#" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
             <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
+            <li class="page-item disabled next">
                 <a class="page-link" href="#" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
