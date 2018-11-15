@@ -1,25 +1,31 @@
 $(function() {
-    var totalPages = 1;
-    var searchData = {};
-    var initialPage = 1;
-    var currentPage = 1;
+    const INIT_PAGE = 1;
+    const STATUS_VALID = 'valid';
+    const STATUS_INVALID = 'invalid';
+    const PEOPLE_URL = 'http://128.199.141.23/people';
+    //not Armenian letters pattern
+    const VALIDATION_PATTERN = /[^\u0561-\u0587\u0531-\u0556]+/g;
+    const START_DATE = 1900;
+    const DIFFERENCE_DATE = 18;
+    let totalPages = 1;
+    let currentPage = 1;
+    let searchData = {};
 
     resetTable();
 
     $('#search').click(function(e) {
         e.preventDefault();
-
-        currentPage = initialPage;
+        currentPage = INIT_PAGE;
         searchData = collectData();
 
-        var error = validate(searchData);
+        let error = validate(searchData);
         cleanErrors();
 
-        if (error.status === 'valid') {
+        if (error.status === STATUS_VALID) {
             showLoadMask();
 
             $.ajax({
-                url: 'http://128.199.141.23/people',
+                url: PEOPLE_URL,
                 type: 'GET',
                 contentType: 'application/json',
                 data: searchData,
@@ -41,11 +47,11 @@ $(function() {
     });
 
     $('form input.form-control').keydown(function() {
-        var data = collectData();
-        var error = validate(data);
+        let data = collectData();
+        let error = validate(data);
         cleanErrors();
 
-        if (error.status === 'invalid') {
+        if (error.status === STATUS_INVALID) {
             showErrors(error);
             $('#search').addClass('disabled').css('pointer-events', 'none');
         } else {
@@ -66,7 +72,7 @@ $(function() {
         searchData.page = currentPage;
 
         $.ajax({
-            url: 'http://128.199.141.23/people',
+            url: PEOPLE_URL,
             type: 'GET',
             contentType: 'application/json',
             data: searchData,
@@ -81,42 +87,40 @@ $(function() {
     });
 
     function collectData() {
-        var data = {};
+        let data = {};
 
         data.firstName = $('input[name=firstName]').val().trim();
         data.lastName = $('input[name=lastName]').val().trim();
         data.fatherName = $('input[name=fatherName]').val().trim();
         data.year = $('input[name=year]').val().trim();
-        data.page = initialPage;
+        data.page = INIT_PAGE;
 
         return data;
     }
 
     function validate(data) {
-        //not Armenian letters pattern
-        var pattern = /[^\u0561-\u0587\u0531-\u0556]+/g;
-        var error = {
-            status: 'valid',
+        let error = {
+            status: STATUS_VALID,
             fields: []
         };
 
-        if (data.firstName === '' || data.firstName.match(pattern)) {
-            error.status = 'invalid';
+        if (data.firstName === '' || data.firstName.match(VALIDATION_PATTERN)) {
+            error.status = STATUS_INVALID;
             error.fields.push('firstName');
         }
 
-        if (data.lastName === '' || data.lastName.match(pattern)) {
-            error.status = 'invalid';
+        if (data.lastName === '' || data.lastName.match(VALIDATION_PATTERN)) {
+            error.status = STATUS_INVALID;
             error.fields.push('lastName');
         }
 
-        if (data.fatherName.match(pattern)) {
-            error.status = 'invalid';
+        if (data.fatherName.match(VALIDATION_PATTERN)) {
+            error.status = STATUS_INVALID;
             error.fields.push('fatherName');
         }
 
-        if (data.year !== '' && !(data.year > 1900 && data.year < new Date().getFullYear() - 18)) {
-            error.status = 'invalid';
+        if (data.year !== '' && !(data.year > START_DATE && data.year < new Date().getFullYear() - DIFFERENCE_DATE)) {
+            error.status = STATUS_INVALID;
             error.fields.push('year');
         }
 
@@ -134,13 +138,13 @@ $(function() {
     }
 
     function updateTable(data) {
-        var rows = '';
-        var tableBody = $('#table-data');
+        let rows = '';
+        let tableBody = $('#table-data');
         resetTable();
 
         totalPages = data.totalPages;
 
-        for (var i=0; i<data.people.length; i++) {
+        for (let i=0; i<data.people.length; i++) {
             rows += getRow(data.people[i], i+1);
         }
 
@@ -161,10 +165,10 @@ $(function() {
     }
 
     function updatePagination() {
-        var pages = '';
-        var paginationView = $('.pagination');
-        var previousPage = $('.previous');
-        var nextPage = $('.next');
+        let pages = '';
+        let paginationView = $('.pagination');
+        let previousPage = $('.previous');
+        let nextPage = $('.next');
         resetPagination();
 
         if (paginationView.find('li').length-2 !== totalPages) {
@@ -174,7 +178,7 @@ $(function() {
                 totalPages = 1;
             }
 
-            for (var i=1; i<=totalPages; i++) {
+            for (let i=1; i<=totalPages; i++) {
                 pages += getPaginationItem(i);
             }
 
@@ -189,7 +193,7 @@ $(function() {
             }
         });
 
-        if (currentPage === 1) {
+        if (currentPage === INIT_PAGE) {
             previousPage.addClass('disabled').css('pointer-events', 'none');
         }
 
