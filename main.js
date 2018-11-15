@@ -31,7 +31,8 @@ $(function() {
                 data: searchData,
                 dataType: 'json'
             }).done(function(data) {
-                updateTable(data);
+                updateTable(data.people);
+                updatePagination(data.totalPages);
                 hideLoadMask();
             }).fail(function(error) {
                 hideLoadMask();
@@ -78,7 +79,8 @@ $(function() {
             data: searchData,
             dataType: 'json'
         }).done(function(data) {
-            updateTable(data);
+            updateTable(data.people);
+            updatePagination(data.totalPages);
             hideLoadMask();
         }).fail(function(error) {
             hideLoadMask();
@@ -127,7 +129,7 @@ $(function() {
         return error;
     }
 
-    function showErrors(error) {
+    function showErrors(error={}) {
         error.fields.forEach(function(field) {
             $('input[name=' + field +']').addClass('is-invalid');
         });
@@ -137,23 +139,19 @@ $(function() {
         $('form input').removeClass('is-invalid');
     }
 
-    function updateTable(data) {
+    function updateTable(data={}) {
         let rows = '';
         let tableBody = $('#table-data');
         resetTable();
 
-        totalPages = data.totalPages;
-
-        for (let i=0; i<data.people.length; i++) {
-            rows += getRow(data.people[i], i+1);
+        for (let i=0; i<data.length; i++) {
+            rows += getRow(data[i], i+1);
         }
 
         tableBody.append(rows);
-
-        updatePagination();
     }
 
-    function getRow(rowData, n) {
+    function getRow(rowData={}, n=1) {
         return '<tr>' +
             '<td scope="row" data-id="' + rowData.id + '">' + n + '</td>' +
             '<td>' + rowData.firstName + '</td>' +
@@ -164,19 +162,16 @@ $(function() {
         '</tr>';
     }
 
-    function updatePagination() {
+    function updatePagination(pageCount=1) {
         let pages = '';
         let paginationView = $('.pagination');
         let previousPage = $('.previous');
         let nextPage = $('.next');
         resetPagination();
 
-        if (paginationView.find('li').length-2 !== totalPages) {
+        if (pageCount !== totalPages) {
+            totalPages = pageCount;
             paginationView.empty();
-
-            if (totalPages === 0) {
-                totalPages = 1;
-            }
 
             for (let i=1; i<=totalPages; i++) {
                 pages += getPaginationItem(i);
@@ -202,7 +197,7 @@ $(function() {
         }
     }
 
-    function getPaginationItem(n) {
+    function getPaginationItem(n=1) {
         return  '<li class="page-item"><a class="page-link" href="#' + n + '">' + n  + '</a></li>';
     }
 
